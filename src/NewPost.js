@@ -1,7 +1,7 @@
 import React from "react";
 
 const NewPost = () => {
-  return <h1>New post</h1>;
+  return <main className="NewPost">New post</main>;
 };
 
 export default NewPost;

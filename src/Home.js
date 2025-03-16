@@ -1,10 +1,11 @@
 import React from "react";
+import Feed from "./Feed";
 
-const Home = () => {
+const Home = ({ posts }) => {
   return (
-    <div>
-      <h1>Home</h1>
-    </div>
+    <main className="Home">
+      <Feed posts={posts} />
+    </main>
   );
 };
 
