@@ -19,10 +19,13 @@ import PostLayout from "./PostLayout";
 import SubArea from "./SubArea";
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
+import useWindowSize from "./hooks/useWindowSize";
+import { DataProvider } from "./context/DataContext";
 
 function App() {
   const [search, setSearch] = useState("");
   const [searchPosts, setSearchPosts] = useState([]);
+  const { width, height } = useWindowSize();
 
   const [posts, setPosts] = useState([
     {
@@ -92,47 +95,49 @@ function App() {
 
   return (
     <div className="App">
-      <Header title="React JS Blog" />
-      <Nav search={search} setSearch={setSearch} />
+      <DataProvider>
+        <Header title="React JS Blog" width={width} />
+        <Nav search={search} setSearch={setSearch} />
 
-      <Routes>
-        <Route index element={<Home posts={searchPosts} />} />
-        <Route path="about" element={<About />} />
+        <Routes>
+          <Route index element={<Home posts={searchPosts} />} />
+          <Route path="about" element={<About />} />
 
-        <Route element={<AuthLayout />}>
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
-        </Route>
+          <Route element={<AuthLayout />}>
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+          </Route>
 
-        <Route path="concerts">
-          <Route index element={<ConcertsHome />} />
-          <Route path=":city" element={<City />} />
-          <Route path=":city/*" element={<SubArea />} />
-          <Route path="trending" element={<Trending />} />
-        </Route>
+          <Route path="concerts">
+            <Route index element={<ConcertsHome />} />
+            <Route path=":city" element={<City />} />
+            <Route path=":city/*" element={<SubArea />} />
+            <Route path="trending" element={<Trending />} />
+          </Route>
 
-        <Route element={<PostLayout />}>
-          <Route
-            path="post"
-            element={
-              <NewPost
-                handleSubmit={handleSubmit}
-                postTitle={postTitle}
-                setPostTitle={setPostTitle}
-                postBody={postBody}
-                setPostBody={setPostBody}
-              />
-            }
-          />
-          <Route
-            path="post/:id"
-            element={<PostPage posts={posts} handleDelete={handleDelete} />}
-          />
-        </Route>
+          <Route element={<PostLayout />}>
+            <Route
+              path="post"
+              element={
+                <NewPost
+                  handleSubmit={handleSubmit}
+                  postTitle={postTitle}
+                  setPostTitle={setPostTitle}
+                  postBody={postBody}
+                  setPostBody={setPostBody}
+                />
+              }
+            />
+            <Route
+              path="post/:id"
+              element={<PostPage posts={posts} handleDelete={handleDelete} />}
+            />
+          </Route>
 
-        <Route path="*" element={<NotFound />}></Route>
-      </Routes>
-      <Footer />
+          <Route path="*" element={<NotFound />}></Route>
+        </Routes>
+        <Footer />
+      </DataProvider>
     </div>
   );
 }
